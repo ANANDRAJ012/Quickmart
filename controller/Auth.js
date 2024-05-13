@@ -112,7 +112,7 @@ exports.resetPassword = async (req, res) => {
         user.password = hashedPassword;
         user.salt = salt;
         await user.save();
-        const subject = 'password successfully reset for GrabMart';
+        const subject = 'password successfully reset for GrabCart';
         const html = `<p>Successfully able to Reset Password</p>`;
         if (email) {
           const response = await sendMail({ to: email, subject, html });
