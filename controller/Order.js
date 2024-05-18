@@ -1,11 +1,12 @@
 const { Order } = require("../model/Order");
 const { User } = require("../model/User");
+const { Request } = require("../model/request");
 const { sendMail, invoiceTemplate } = require("../services/common");
 
 exports.fetchOrdersByUser = async (req, res) => {
     const { id } = req.user;
     try {
-      const orders = await Order.find({ user: id });
+      const orders = await Order.find({ user: id }).populate("latestRequest");
   
       res.status(200).json(orders);
     } catch (err) {
@@ -23,6 +24,7 @@ exports.fetchOrdersByUser = async (req, res) => {
              
       res.status(201).json(doc);
     } catch (err) {
+      console.log(err)
       res.status(400).json(err);
     }
   };
@@ -40,9 +42,15 @@ exports.fetchOrdersByUser = async (req, res) => {
   exports.updateOrder = async (req, res) => {
     const { id } = req.params;
     try {
-      const order = await Order.findByIdAndUpdate(id, req.body, {
+      let order = await Order.findByIdAndUpdate(id, req.body, {
         new: true,
       });
+      if(req.body.orderStatus){
+        await Request.findByIdAndUpdate(req.body.latestRequest._id,{
+          "status":req.body.orderStatus
+        },{new:true})
+      }
+      order = await order.populate("latestRequest")
       res.status(200).json(order);
     } catch (err) {
       res.status(400).json(err);
@@ -52,8 +60,10 @@ exports.fetchOrdersByUser = async (req, res) => {
   exports.fetchAllOrders = async (req, res) => {
     // sort = {_sort:"price",_order="desc"}
     // pagination = {_page:1,_limit=10}
-    let query = Order.find({deleted:{$ne:true}});
+    let query = Order.find({deleted:{$ne:true}}).populate("latestRequest");
     let totalOrdersQuery = Order.find({deleted:{$ne:true}});
+
+    console.log(totalOrdersQuery)
   
     
     if (req.query._sort && req.query._order) {
@@ -72,8 +82,10 @@ exports.fetchOrdersByUser = async (req, res) => {
     try {
       const docs = await query.exec();
       res.set('X-Total-Count', totalDocs);
+      console.log(docs)
       res.status(200).json(docs);
     } catch (err) {
+      console.log(err)
       res.status(400).json(err);
     }
   };

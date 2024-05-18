@@ -20,6 +20,9 @@ const usersRouter = require('./routes/Users');
 const authRouter = require('./routes/Auth');
 const cartRouter = require('./routes/Cart');
 const ordersRouter = require('./routes/Order');
+const contactRouter = require('./routes/contactRoutes');
+const requestRouter = require('./routes/requestRoutes');
+
 const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 const path = require('path');
@@ -69,8 +72,10 @@ server.use('/categories', isAuth(), categoriesRouter.router);
 server.use('/brands', isAuth(), brandsRouter.router);
 server.use('/users', isAuth(), usersRouter.router);
 server.use('/auth', authRouter.router);
+server.use('/contact', contactRouter.router);
 server.use('/cart', isAuth(), cartRouter.router);
 server.use('/orders', isAuth(), ordersRouter.router);
+server.use('/requests', requestRouter.router);
 
 
 
