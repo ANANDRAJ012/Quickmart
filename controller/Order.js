@@ -63,7 +63,7 @@ exports.fetchOrdersByUser = async (req, res) => {
     let query = Order.find({deleted:{$ne:true}}).populate("latestRequest");
     let totalOrdersQuery = Order.find({deleted:{$ne:true}});
 
-    console.log(totalOrdersQuery)
+    // console.log(totalOrdersQuery)
   
     
     if (req.query._sort && req.query._order) {
@@ -82,7 +82,7 @@ exports.fetchOrdersByUser = async (req, res) => {
     try {
       const docs = await query.exec();
       res.set('X-Total-Count', totalDocs);
-      console.log(docs)
+      // console.log(docs)
       res.status(200).json(docs);
     } catch (err) {
       console.log(err)
