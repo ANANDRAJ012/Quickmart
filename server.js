@@ -3,6 +3,13 @@ const express = require('express');
 const server = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+// const cors = require('cors');
+const corsConfig = {
+  origin: "*",
+  Credential: true,
+  methods:["GET", "POST","DELETE"],
+};
+server.use(cors(corsConfig));
 const session = require('express-session');
 const passport = require('passport');
 const { MongoClient, ServerApiVersion } = require('mongodb');
