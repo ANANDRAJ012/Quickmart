@@ -29,11 +29,8 @@ const usersRouter = require('./routes/Users');
 const authRouter = require('./routes/Auth');
 const cartRouter = require('./routes/Cart');
 const ordersRouter = require('./routes/Order');
-// const contactRouter = require('./routes/ContactRoutes');
-const requestRouter = require('./routes/RequestRoutes');
-const contactRoutes = require('./routes/ContactRoutes');
-
-
+const contactRouter = require('./routes/Contact');
+const requestRouter = require('./routes/request');
 
 
 const { User } = require('./model/User');
@@ -70,7 +67,7 @@ server.use('/categories', isAuth(), categoriesRouter.router);
 server.use('/brands', isAuth(), brandsRouter.router);
 server.use('/users', isAuth(), usersRouter.router);
 server.use('/auth', authRouter.router);
-server.use('/contact', contactRoutes.router);
+server.use('/contact', contactRouter.router);
 server.use('/cart', isAuth(), cartRouter.router);
 server.use('/orders', isAuth(), ordersRouter.router);
 server.use('/requests', requestRouter.router);
